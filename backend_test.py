@@ -82,6 +82,35 @@ class BlessedGratefulAPITester:
                 return False
         return False
 
+    def test_talk_endpoint(self):
+        """Test the /api/talk endpoint"""
+        test_data = {
+            "prompt": "Hello, I need some guidance today."
+        }
+        
+        success, response = self.run_test(
+            "Talk Endpoint",
+            "POST",
+            "talk",
+            200,
+            data=test_data
+        )
+        
+        if success and 'reply' in response:
+            reply = response.get('reply', '')
+            if reply and len(reply) > 10:  # Basic check for meaningful response
+                print(f"✅ Talk endpoint returned reply: {reply[:100]}...")
+                # Check that no API keys are exposed in the response
+                sensitive_terms = ['api_key', 'openai', 'sk-', 'OPENAI_API_KEY']
+                if any(term.lower() in reply.lower() for term in sensitive_terms):
+                    print("⚠️ Warning: Response may contain sensitive information")
+                    return False
+                return True
+            else:
+                print(f"⚠️ Talk endpoint returned empty or short reply: {reply}")
+                return False
+        return False
+
 def main():
     print("🚀 Starting Blessed & Grateful API Tests")
     print("=" * 50)
