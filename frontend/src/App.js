@@ -4,6 +4,8 @@ import axios from "axios";
 import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
 import ArchivePage from "./Archive";
 import DrChenPage from "./DrChen";
+import PodcastPage from "./Podcast";
+import TalkPage from "./Talk";
 import { allArchive, anchorQuotes } from "./quotes";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
