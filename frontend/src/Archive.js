@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { archiveCategories } from "./quotes";
 
 function normalize(item) {
@@ -6,18 +6,60 @@ function normalize(item) {
   return item;
 }
 
+function keyFor(item) {
+  const it = normalize(item);
+  return it.q;
+}
+
 function Modal({ open, onClose, quote }) {
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.activeElement;
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "Tab") {
+        const focusables = dialogRef.current?.querySelectorAll(
+          "button, [href], input, textarea, [tabindex]:not([tabindex='-1'])",
+        );
+        if (!focusables || focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    // focus first focusable
+    setTimeout(() => {
+      const first = dialogRef.current?.querySelector(
+        "button, [href], input, textarea, [tabindex]:not([tabindex='-1'])",
+      );
+      first?.focus();
+    }, 0);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      prev && prev.focus();
+    };
+  }, [open, onClose]);
+
   if (!open) return null;
   const { q, context, excerpt } = quote || {};
   return (
-    <div className="fixed inset-0 z-50">
+    <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="quote-title" aria-describedby="quote-body">
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
       <div className="absolute inset-0 flex items-center justify-center p-4">
-        <div className="bg-white rounded-xl shadow-xl border border-gray-200 max-w-2xl w-full p-6 relative">
+        <div ref={dialogRef} className="bg-white rounded-xl shadow-xl border border-gray-200 max-w-2xl w-full p-6 relative">
           <button onClick={onClose} aria-label="Close" className="absolute right-3 top-3 text-gray-500 hover:text-black">✕</button>
-          <h3 className="text-xl font-semibold">“{q}”</h3>
+          <h3 id="quote-title" className="text-xl font-semibold">“{q}”</h3>
           {context && (
-            <p className="mt-4 text-gray-700 whitespace-pre-line">{context}</p>
+            <p id="quote-body" className="mt-4 text-gray-700 whitespace-pre-line">{context}</p>
           )}
           {excerpt && (
             <blockquote className="mt-4 border-l-4 border-gray-200 pl-4 text-gray-700">{excerpt}</blockquote>
@@ -34,12 +76,12 @@ function Category({ title, quotes, onOpen }) {
       <div className="mx-auto max-w-6xl px-4 py-10">
         <h2 className="section-title">{title}</h2>
         <div className="mt-6 grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {quotes.map((raw, i) => {
+          {quotes.map((raw) => {
             const item = normalize(raw);
             return (
               <button
                 className="card text-left hover:shadow-md transition"
-                key={i}
+                key={keyFor(item)}
                 onClick={() => onOpen(item)}
               >
                 <p>“{item.q}”</p>

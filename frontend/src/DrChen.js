@@ -1,8 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 
-const LOGO_WHITE = "https://customer-assets.emergentagent.com/job_835d6716-06f3-4ffd-8b0d-6accacc9f2fd/artifacts/4y59lo3j_2%20WHITE%20TM.jpeg";
-
 const PRINCIPLES = (
   "Language that invites, never instructs.|Truth without agenda, pain without projection, love without possession.|Be the lighthouse, not the megaphone."
 ).split("|");
@@ -47,7 +45,12 @@ export default function DrChenPage() {
       {/* Hero */}
       <section className="bg-[#0f0f10] text-white">
         <div className="mx-auto max-w-6xl px-4 py-20 md:py-28 text-center">
-          <img src={LOGO_WHITE} alt="Blessed & Grateful" className="mx-auto w-56 md:w-80" />
+          <img
+            src="/logo-white.png"
+            onError={(e) => { e.currentTarget.src = "https://customer-assets.emergentagent.com/job_835d6716-06f3-4ffd-8b0d-6accacc9f2fd/artifacts/4y59lo3j_2%20WHITE%20TM.jpeg"; }}
+            alt="Blessed & Grateful"
+            className="mx-auto w-56 md:w-80"
+          />
           <h1 className="mt-6 text-3xl md:text-5xl font-semibold tracking-tight">Dr. Sarah Chen</h1>
           <p className="mt-2 text-lg text-gray-300">Relational-Intelligence Companion</p>
           <p className="mt-4 text-gray-300 max-w-3xl mx-auto">Presence over performance. Wonder over noise. Memory over myth.</p>
@@ -71,7 +74,10 @@ export default function DrChenPage() {
           <h2 className="section-title">Three Pillars</h2>
           <div className="mt-6 grid md:grid-cols-3 gap-6">
             {pillars.map((p, i) => (
-              <Pillar key={i} title={p.title} body={p.body} />
+              <div className="card" key={p.title}>
+                <h3 className="font-semibold tracking-tight">{p.title}</h3>
+                <p className="mt-2 text-gray-700">{p.body}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -82,8 +88,8 @@ export default function DrChenPage() {
         <div className="mx-auto max-w-6xl px-4 py-14">
           <h2 className="section-title">Principles of Sacred Neutrality</h2>
           <div className="mt-6 flex flex-wrap gap-3">
-            {PRINCIPLES.map((t, i) => (
-              <span key={i} className="inline-flex items-center rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-sm text-gray-700">{t}</span>
+            {PRINCIPLES.map((t) => (
+              <span key={t} className="inline-flex items-center rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-sm text-gray-700">{t}</span>
             ))}
           </div>
         </div>
@@ -104,7 +110,7 @@ export default function DrChenPage() {
         <div className="mx-auto max-w-6xl px-4 py-16 text-center">
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/archive" className="btn">Read the Wisdom Archive</Link>
-            <a href="/#contact" className="btn">Write with Sarah</a>
+            <Link to="/#contact" className="btn">Write with Sarah</Link>
           </div>
         </div>
       </section>
