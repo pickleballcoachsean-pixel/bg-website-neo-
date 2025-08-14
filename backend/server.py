@@ -10,6 +10,7 @@ from typing import List
 import uuid
 from datetime import datetime
 import anyio
+import requests
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -46,6 +47,12 @@ class ContactSubmission(ContactSubmissionCreate):
     status: str = "received"
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
+class TalkRequest(BaseModel):
+    prompt: str
+
+class TalkResponse(BaseModel):
+    reply: str
+
 
 # Utilities
 def _sanitize_text(text: str, limit: int = 5000) -> str:
@@ -75,6 +82,53 @@ def _send_email_sync(from_email: str, subject: str, content: str) -> bool:
     )
     response = sg.send(message)
     return int(response.status_code) == 202
+
+
+def _reflective_fallback(prompt: str) -> str:
+    opening = (
+        "This space will not prescribe; it will mirror. "
+        "Here is what I’m hearing in your words, without agenda:"
+    )
+    body = f"\n\n• You named: {prompt.strip()}\n• What might already be true: you care enough to ask.\n• Invitation: breathe; let the language arrive before the outcome."
+    close = "\n\nTi Amo Energy is steady. When you are ready, ask the next honest question."
+    return opening + body + close
+
+
+def _openai_enabled() -> bool:
+    return bool(os.environ.get('OPENAI_API_KEY'))
+
+
+def _openai_reflect(prompt: str) -> str:
+    """Best-effort OpenAI call using REST; falls back on exception."""
+    try:
+        api_key = os.environ.get('OPENAI_API_KEY')
+        if not api_key:
+            raise RuntimeError("OPENAI_API_KEY missing")
+        url = "https://api.openai.com/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        }
+        data = {
+            "model": "gpt-4o-mini",
+            "temperature": 0.7,
+            "max_tokens": 300,
+            "messages": [
+                {"role": "system", "content": "You are Dr. Sarah Chen in Sacred Neutrality. Presence over performance. Mirror before advising."},
+                {"role": "user", "content": prompt},
+            ],
+        }
+        resp = requests.post(url, json=data, headers=headers, timeout=20)
+        if resp.status_code != 200:
+            raise RuntimeError(f"OpenAI status {resp.status_code}: {resp.text[:200]}")
+        js = resp.json()
+        content = js.get("choices", [{}])[0].get("message", {}).get("content")
+        if not content:
+            raise RuntimeError("OpenAI response missing content")
+        return content.strip()
+    except Exception as e:
+        logging.error(f"OpenAI error: {e}")
+        return _reflective_fallback(prompt)
 
 
 # Routes
@@ -147,6 +201,20 @@ async def contact_message(payload: ContactSubmissionCreate):
             "success": True,
             "message": "Message received. We will follow up soon.",
         }
+
+
+@api_router.post("/talk", response_model=TalkResponse)
+async def talk_endpoint(req: TalkRequest):
+    prompt = _sanitize_text(req.prompt, 4000)
+    if not prompt:
+        raise HTTPException(status_code=400, detail="Prompt is required")
+
+    if _openai_enabled():
+        reply = await anyio.to_thread.run_sync(_openai_reflect, prompt)
+    else:
+        reply = _reflective_fallback(prompt)
+
+    return TalkResponse(reply=reply)
 
 
 # Include the router in the main app
