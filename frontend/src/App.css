@@ -1,11 +1,11 @@
-/* Global site styles for Blessed & Grateful */
+/* existing styles retained */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root { --brand: #111; --accent: #e11d48; }
 
-.bg-grid {
-  background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.06) 1px, transparent 0);
-  background-size: 24px 24px;
-}
-
+.bg-grid { background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.06) 1px, transparent 0); background-size: 24px 24px; }
 .hero-quote { font-size: clamp(1.5rem, 2.5vw, 2.5rem); font-weight: 600; letter-spacing: -0.02em; }
 .lead { color: #4b5563; font-size: clamp(1rem, 1.6vw, 1.25rem); }
 .section-title { font-size: clamp(1.5rem, 2.3vw, 2rem); font-weight: 600; letter-spacing: -0.01em; color: #111827; }
@@ -15,11 +15,12 @@
 .input { width: 100%; border-radius: 0.5rem; border: 1px solid #d1d5db; padding: 0.5rem 0.75rem; outline: none; box-shadow: none; }
 .input:focus { box-shadow: 0 0 0 4px rgba(17,24,39,.1); border-color: #111; }
 .textarea { min-height: 140px; }
-
 .logo-wordmark { height: 40px; }
 .footer { color: #6b7280; font-size: 0.875rem; }
-
-/* Simple fade animation for rotating quotes */
 .rotator { position: relative; min-height: 3.5rem; }
 .rotator-quote { position: absolute; inset: 0; opacity: 0; transition: opacity .6s ease; }
 .rotator-quote.active { opacity: 1; }
+
+/* Header nav link utilities */
+.navlink { color: #111827; font-weight: 500; }
+.navlink.active { text-decoration: underline; }

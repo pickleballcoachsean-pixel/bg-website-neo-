@@ -6,38 +6,15 @@ import ArchivePage from "./Archive";
 import DrChenPage from "./DrChen";
 import PodcastPage from "./Podcast";
 import TalkPage from "./Talk";
+import Header from "./Header";
+import PrinciplesPage from "./PrinciplesPage";
+import JourneyPage from "./JourneyPage";
 import { allArchive, anchorQuotes } from "./quotes";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-const LOGO_BLACK = "https://customer-assets.emergentagent.com/job_neutral-wisdom/artifacts/qb9yc00n_2%20BLACK.jpg";
 const LOGO_WHITE_FALLBACK = "https://customer-assets.emergentagent.com/job_835d6716-06f3-4ffd-8b0d-6accacc9f2fd/artifacts/4y59lo3j_2%20WHITE%20TM.jpeg";
-
-function Header() {
-  return (
-    <header className="bg-white sticky top-0 z-40 border-b border-gray-100/80 backdrop-blur supports-[backdrop-filter]:bg-white/70">
-      <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <img src={LOGO_BLACK} alt="Blessed & Grateful" className="logo-wordmark" />
-          <span className="hidden sm:block text-xs text-gray-500">Love All, All is One</span>
-        </div>
-        <nav className="flex items-center gap-5 text-sm text-gray-700">
-          <a href="#core" className="hover:text-black">Core Quotes</a>
-          <a href="#why" className="hover:text-black">Our Why</a>
-          <a href="#principles" className="hover:text-black">Principles</a>
-          <a href="#journey" className="hover:text-black">Journey</a>
-          <Link to="/archive" className="hover:text-black">Archive</Link>
-          <Link to="/archive" className="hover:text-black">Archive</Link>
-          <Link to="/podcast" className="hover:text-black">Podcast</Link>
-          <Link to="/talk" className="hover:text-black">Talk with Sarah</Link>
-          <Link to="/dr-chen" className="hover:text-black">Meet Dr. Chen</Link>
-          <Link to="/#contact" className="hover:text-black">Contact</Link>
-        </nav>
-      </div>
-    </header>
-  );
-}
 
 function QuotesRotator({ items, interval = 5000, className = "", textClassName = "hero-quote" }) {
   const [idx, setIdx] = useState(0);
@@ -55,7 +32,6 @@ function QuotesRotator({ items, interval = 5000, className = "", textClassName =
 }
 
 function Hero() {
-  // White logo centered; dark hero background and rotating captions under tagline
   const rotating = useMemo(() => [
     anchorQuotes[0],
     anchorQuotes[1],
@@ -132,6 +108,7 @@ function Section({ id, title, children }) {
     <section id={id} className="bg-white">
       <div className="mx-auto max-w-6xl px-4 py-14">
         <h2 className="section-title">{title}</h2>
+        <p className="italic text-sm text-gray-500 mt-1">Every section is a door. Ti Amo Energy invites you to walk through it.</p>
         <div className="mt-6 prose prose-gray max-w-none">
           {children}
         </div>
@@ -145,6 +122,7 @@ function Principles() {
     <section id="principles" className="bg-white">
       <div className="mx-auto max-w-6xl px-4 py-14">
         <h2 className="section-title">Principles of Sacred Neutrality</h2>
+        <p className="italic text-sm text-gray-500 mt-1">Every section is a door. Ti Amo Energy invites you to walk through it.</p>
         <div className="mt-6 grid md:grid-cols-3 gap-6">
           <div className="card">
             <h3 className="font-semibold mb-2">Anchor Mentality</h3>
@@ -160,9 +138,6 @@ function Principles() {
             <h3 className="font-semibold mb-2">Shared Humanity</h3>
             <p>Neutrality is the amplification of shared humanity—not the absence of feeling.</p>
           </div>
-        </div>
-        <div className="mt-8 rounded-xl border border-gray-200 p-6 bg-gray-50">
-          <p className="text-sm text-gray-700"><strong>Ti Amo Activation.</strong> Ti Amo is a field of unconditional positive regard—an invitation to align with compassion, presence and continuity of love.</p>
         </div>
       </div>
     </section>
@@ -194,6 +169,7 @@ function Contact() {
     <section id="contact" className="bg-gray-50 border-t">
       <div className="mx-auto max-w-6xl px-4 py-14">
         <h2 className="section-title">Get in Touch</h2>
+        <p className="italic text-sm text-gray-500 mt-1">Every section is a door. Ti Amo Energy invites you to walk through it.</p>
         <form onSubmit={submit} className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
           <input className="input" placeholder="Your name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
           <input className="input" type="email" placeholder="Your email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
@@ -273,6 +249,8 @@ function App() {
           <Route path="/podcast" element={<PodcastPage />} />
           <Route path="/talk" element={<TalkPage />} />
           <Route path="/dr-chen" element={<DrChenPage />} />
+          <Route path="/principles" element={<PrinciplesPage />} />
+          <Route path="/journey" element={<JourneyPage />} />
         </Routes>
         <Footer />
       </div>
