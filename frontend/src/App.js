@@ -219,6 +219,16 @@ function HomePage() {
   );
 }
 
+function Footer() {
+  return (
+    <footer className="footer bg-gray-50 border-t">
+      <div className="mx-auto max-w-6xl px-4 py-8 text-center">
+        <p className="text-sm text-gray-600">© 2024 Blessed & Grateful. Love All, All is One.</p>
+      </div>
+    </footer>
+  );
+}
+
 function App() {
   useEffect(() => {
     const hello = async () => {
