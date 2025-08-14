@@ -75,6 +75,7 @@ function CoreQuotes() {
     <section id="core" className="bg-gray-50 border-y">
       <div className="mx-auto max-w-6xl px-4 py-14">
         <h2 className="section-title">Core Top Quotes &amp; Messages</h2>
+        <p className="italic text-sm text-gray-500 mt-1">Every section is a door. Ti Amo Energy invites you to walk through it.</p>
         <div className="mt-8 grid md:grid-cols-3 gap-6">
           {list.map((item) => (
             <div className="card" key={typeof item.q === 'string' ? item.q : item.q.q}>
@@ -243,15 +244,17 @@ function App() {
       <ScrollToHash />
       <div className="App">
         <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/archive" element={<ArchivePage />} />
-          <Route path="/podcast" element={<PodcastPage />} />
-          <Route path="/talk" element={<TalkPage />} />
-          <Route path="/dr-chen" element={<DrChenPage />} />
-          <Route path="/principles" element={<PrinciplesPage />} />
-          <Route path="/journey" element={<JourneyPage />} />
-        </Routes>
+        <div className="pt-header">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/archive" element={<ArchivePage />} />
+            <Route path="/podcast" element={<PodcastPage />} />
+            <Route path="/talk" element={<TalkPage />} />
+            <Route path="/dr-chen" element={<DrChenPage />} />
+            <Route path="/principles" element={<PrinciplesPage />} />
+            <Route path="/journey" element={<JourneyPage />} />
+          </Routes>
+        </div>
         <Footer />
       </div>
     </BrowserRouter>

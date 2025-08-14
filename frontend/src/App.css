@@ -23,4 +23,8 @@
 
 /* Header nav link utilities */
 .navlink { color: #111827; font-weight: 500; }
-.navlink.active { text-decoration: underline; }
+.navlink.active { text-decoration: underline; text-underline-offset: 3px; }
+.navlink:focus-visible { outline: 2px solid #111; outline-offset: 2px; }
+
+/* Safe top offset for sticky header */
+.pt-header { padding-top: 4rem; }
