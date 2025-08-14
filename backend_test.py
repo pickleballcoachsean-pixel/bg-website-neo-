@@ -125,11 +125,14 @@ def main():
     print("\n📧 Testing Contact Form...")
     contact_ok = tester.test_contact_submission()
     
+    print("\n💬 Testing Talk Endpoint...")
+    talk_ok = tester.test_talk_endpoint()
+    
     # Print results
     print("\n" + "=" * 50)
     print(f"📊 Tests passed: {tester.tests_passed}/{tester.tests_run}")
     
-    if health_ok and contact_ok:
+    if health_ok and contact_ok and talk_ok:
         print("🎉 All critical API tests passed!")
         return 0
     else:
