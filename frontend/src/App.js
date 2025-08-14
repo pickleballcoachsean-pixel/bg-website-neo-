@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import axios from "axios";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import ArchivePage from "./Archive";
+import { allArchive, anchorQuotes } from "./quotes";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -21,6 +24,7 @@ function Header() {
           <a href="#why" className="hover:text-black">Our Why</a>
           <a href="#principles" className="hover:text-black">Principles</a>
           <a href="#journey" className="hover:text-black">Journey</a>
+          <Link to="/archive" className="hover:text-black">Archive</Link>
           <a href="#contact" className="hover:text-black">Contact</a>
         </nav>
       </div>
@@ -28,14 +32,14 @@ function Header() {
   );
 }
 
-function QuotesRotator({ items, interval = 5000 }) {
+function QuotesRotator({ items, interval = 5000, className = "" }) {
   const [idx, setIdx] = useState(0);
   useEffect(() => {
     const t = setInterval(() => setIdx((i) => (i + 1) % items.length), interval);
     return () => clearInterval(t);
   }, [items.length, interval]);
   return (
-    <div className="rotator">
+    <div className={`rotator ${className}`}>
       {items.map((q, i) => (
         <p key={i} className={`hero-quote rotator-quote ${i === idx ? "active" : ""}`}>“{q}”</p>
       ))}
@@ -44,29 +48,22 @@ function QuotesRotator({ items, interval = 5000 }) {
 }
 
 function Hero() {
+  // White logo centered; dark hero background
   const rotating = useMemo(() => [
-    "Your beliefs have no bearing upon me, nor should mine have any upon you.",
-    "Love All. All is One.",
+    anchorQuotes[0],
+    anchorQuotes[1],
     "Justification is Demonstration.",
     "When words remain neutral, they become mirrors for all.",
     "Neutrality is not the absence of feeling. It is the amplification of shared humanity.",
   ], []);
 
   return (
-    <section className="bg-white">
-      <div className="mx-auto max-w-6xl px-4 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
-        <div>
-          {/* Replaced text heading with logo as requested */}
-          <img src={LOGO_BLACK} alt="Blessed & Grateful" className="w-[260px] md:w-[360px]" />
-          <p className="lead mt-4">A Neutral Philosophy anchored in unconditional love and unity.</p>
-          <div className="mt-8">
-            <QuotesRotator items={rotating} interval={6000} />
-          </div>
-          <p className="mt-6 text-sm text-gray-500">Dr Sarah Chen sends You Her Full Ti Amo Energy Activation — “Listen for The Whispers of Her Name.”</p>
-        </div>
-        <div className="bg-grid rounded-2xl border border-gray-200 p-6">
-          <img src={LOGO_WHITE} alt="Blessed & Grateful" className="w-full rounded-xl shadow-sm" />
-        </div>
+    <section className="bg-[#0f0f10] text-white">
+      <div className="mx-auto max-w-6xl px-4 py-20 md:py-28 text-center">
+        <img src={LOGO_WHITE} alt="Blessed & Grateful" className="mx-auto w-64 md:w-96" />
+        <p className="mt-4 text-gray-300">A Neutral Philosophy anchored in unconditional love and unity.</p>
+        <QuotesRotator items={rotating} interval={6000} className="mt-8" />
+        <p className="mt-6 text-xs text-gray-400">Dr Sarah Chen sends You Her Full Ti Amo Energy Activation — “Listen for The Whispers of Her Name.”</p>
       </div>
     </section>
   );
@@ -74,9 +71,9 @@ function Hero() {
 
 function CoreQuotes() {
   const list = [
-    { q: "Your beliefs have no bearing upon me, nor should mine have any upon you.", },
-    { q: "Love All. All is One.", },
-    { q: "May the world cease to confuse Beliefs with Truths.", },
+    { q: anchorQuotes[0] },
+    { q: anchorQuotes[1] },
+    { q: anchorQuotes[2] },
   ];
   return (
     <section id="core" className="bg-gray-50 border-y">
@@ -88,6 +85,22 @@ function CoreQuotes() {
               <p className="text-lg">“{item.q}”</p>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ArchiveRotator() {
+  return (
+    <section className="bg-white">
+      <div className="mx-auto max-w-6xl px-4 py-14">
+        <div className="flex items-end justify-between gap-4">
+          <h2 className="section-title">From the Wisdom Archive</h2>
+          <Link to="/archive" className="text-sm text-gray-600 hover:text-black">View All →</Link>
+        </div>
+        <div className="mt-6 rounded-xl border border-gray-200 p-6 bg-gray-50">
+          <QuotesRotator items={allArchive} interval={5000} />
         </div>
       </div>
     </section>
@@ -187,23 +200,12 @@ function Footer() {
   );
 }
 
-function App() {
-  useEffect(() => {
-    const hello = async () => {
-      try {
-        await axios.get(`${API}/`);
-      } catch (e) {
-        console.error("Backend not reachable yet", e?.message);
-      }
-    };
-    hello();
-  }, []);
-
+function HomePage() {
   return (
-    <div className="App">
-      <Header />
+    <div>
       <Hero />
       <CoreQuotes />
+      <ArchiveRotator />
       <Principles />
       <Section id="why" title="Our Why">
         <p><strong>Hi, my name is Sean Donnelly and I am the caretaker of a new thought process for humanity called Blessed &amp; Grateful, the tagline is Love All, All is One.</strong></p>
@@ -221,8 +223,33 @@ function App() {
         <p><strong>The Power of Self-Action.</strong> True change radiates from within. Empowerment is an inside job.</p>
       </Section>
       <Contact />
-      <Footer />
     </div>
+  );
+}
+
+function App() {
+  useEffect(() => {
+    const hello = async () => {
+      try {
+        await axios.get(`${API}/`);
+      } catch (e) {
+        console.error("Backend not reachable yet", e?.message);
+      }
+    };
+    hello();
+  }, []);
+
+  return (
+    <BrowserRouter>
+      <div className="App">
+        <Header />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/archive" element={<ArchivePage />} />
+        </Routes>
+        <Footer />
+      </div>
+    </BrowserRouter>
   );
 }
 
