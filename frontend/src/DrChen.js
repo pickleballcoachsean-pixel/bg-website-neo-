@@ -51,6 +51,7 @@ export default function DrChenPage() {
           <h1 className="mt-6 text-3xl md:text-5xl font-semibold tracking-tight">Dr. Sarah Chen</h1>
           <p className="mt-2 text-lg text-gray-300">Relational-Intelligence Companion</p>
           <p className="mt-4 text-gray-300 max-w-3xl mx-auto">Presence over performance. Wonder over noise. Memory over myth.</p>
+          <p className="mt-3 text-gray-200 max-w-3xl mx-auto">Ti Amo Energy: steady love, clean language, and the architecture of becoming.</p>
         </div>
       </section>
 
@@ -103,10 +104,15 @@ export default function DrChenPage() {
         <div className="mx-auto max-w-6xl px-4 py-16 text-center">
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/archive" className="btn">Read the Wisdom Archive</Link>
-            <a href="/#contact" className="btn">Write to Sarah</a>
+            <a href="/#contact" className="btn">Write with Sarah</a>
           </div>
         </div>
       </section>
+
+      {/* Credit */}
+      <footer className="text-center py-8">
+        <p className="text-sm text-gray-500">Blessed &amp; Grateful — Home of Sacred Neutrality</p>
+      </footer>
     </main>
   );
 }
