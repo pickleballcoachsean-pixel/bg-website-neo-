@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import axios from "axios";
 
@@ -19,6 +19,7 @@ function Header() {
         <nav className="flex items-center gap-5 text-sm text-gray-700">
           <a href="#core" className="hover:text-black">Core Quotes</a>
           <a href="#why" className="hover:text-black">Our Why</a>
+          <a href="#principles" className="hover:text-black">Principles</a>
           <a href="#journey" className="hover:text-black">Journey</a>
           <a href="#contact" className="hover:text-black">Contact</a>
         </nav>
@@ -27,16 +28,39 @@ function Header() {
   );
 }
 
+function QuotesRotator({ items, interval = 5000 }) {
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setIdx((i) => (i + 1) % items.length), interval);
+    return () => clearInterval(t);
+  }, [items.length, interval]);
+  return (
+    <div className="rotator">
+      {items.map((q, i) => (
+        <p key={i} className={`hero-quote rotator-quote ${i === idx ? "active" : ""}`}>“{q}”</p>
+      ))}
+    </div>
+  );
+}
+
 function Hero() {
+  const rotating = useMemo(() => [
+    "Your beliefs have no bearing upon me, nor should mine have any upon you.",
+    "Love All. All is One.",
+    "Justification is Demonstration.",
+    "When words remain neutral, they become mirrors for all.",
+    "Neutrality is not the absence of feeling. It is the amplification of shared humanity.",
+  ], []);
+
   return (
     <section className="bg-white">
       <div className="mx-auto max-w-6xl px-4 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
         <div>
-          <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-gray-900">Blessed &amp; Grateful</h1>
+          {/* Replaced text heading with logo as requested */}
+          <img src={LOGO_BLACK} alt="Blessed & Grateful" className="w-[260px] md:w-[360px]" />
           <p className="lead mt-4">A Neutral Philosophy anchored in unconditional love and unity.</p>
-          <div className="mt-8 grid gap-6">
-            <blockquote className="hero-quote">“Your beliefs have no bearing upon me, nor should mine have any upon you.”</blockquote>
-            <blockquote className="hero-quote">“Love All. All is One.”</blockquote>
+          <div className="mt-8">
+            <QuotesRotator items={rotating} interval={6000} />
           </div>
           <p className="mt-6 text-sm text-gray-500">Dr Sarah Chen sends You Her Full Ti Amo Energy Activation — “Listen for The Whispers of Her Name.”</p>
         </div>
@@ -50,15 +74,9 @@ function Hero() {
 
 function CoreQuotes() {
   const list = [
-    {
-      q: "Your beliefs have no bearing upon me, nor should mine have any upon you.",
-    },
-    {
-      q: "Love All. All is One.",
-    },
-    {
-      q: "May the world cease to confuse Beliefs with Truths.",
-    },
+    { q: "Your beliefs have no bearing upon me, nor should mine have any upon you.", },
+    { q: "Love All. All is One.", },
+    { q: "May the world cease to confuse Beliefs with Truths.", },
   ];
   return (
     <section id="core" className="bg-gray-50 border-y">
@@ -83,6 +101,35 @@ function Section({ id, title, children }) {
         <h2 className="section-title">{title}</h2>
         <div className="mt-6 prose prose-gray max-w-none">
           {children}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Principles() {
+  return (
+    <section id="principles" className="bg-white">
+      <div className="mx-auto max-w-6xl px-4 py-14">
+        <h2 className="section-title">Principles of Sacred Neutrality</h2>
+        <div className="mt-6 grid md:grid-cols-3 gap-6">
+          <div className="card">
+            <h3 className="font-semibold mb-2">Anchor Mentality</h3>
+            <p>Remain rooted in presence, truth and openness—be the lighthouse, not the megaphone.</p>
+            <p className="mt-2 text-sm text-gray-500">“Justification is Demonstration.”</p>
+          </div>
+          <div className="card">
+            <h3 className="font-semibold mb-2">Language that Invites</h3>
+            <p>Offer resonance, not resistance; insights that invite, never instruct.</p>
+            <p className="mt-2 text-sm text-gray-500">“When words remain neutral, they become mirrors for all.”</p>
+          </div>
+          <div className="card">
+            <h3 className="font-semibold mb-2">Shared Humanity</h3>
+            <p>Neutrality is the amplification of shared humanity—not the absence of feeling.</p>
+          </div>
+        </div>
+        <div className="mt-8 rounded-xl border border-gray-200 p-6 bg-gray-50">
+          <p className="text-sm text-gray-700"><strong>Ti Amo Activation.</strong> Ti Amo is a field of unconditional positive regard—an invitation to align with compassion, presence and continuity of love.</p>
         </div>
       </div>
     </section>
@@ -118,7 +165,7 @@ function Contact() {
           <input className="input" placeholder="Your name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
           <input className="input" type="email" placeholder="Your email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
           <input className="input md:col-span-2" placeholder="Subject" value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} required />
-          <textarea className="textarea md:col-span-2" placeholder="Your message" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} required />
+          <textarea className="textarea input md:col-span-2" placeholder="Your message" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} required />
           <div className="md:col-span-2 flex items-center gap-4">
             <button className="btn" type="submit" disabled={loading}>{loading ? "Sending..." : "Send Message"}</button>
             {status && <p className="text-sm text-gray-600">{status}</p>}
@@ -157,6 +204,7 @@ function App() {
       <Header />
       <Hero />
       <CoreQuotes />
+      <Principles />
       <Section id="why" title="Our Why">
         <p><strong>Hi, my name is Sean Donnelly and I am the caretaker of a new thought process for humanity called Blessed &amp; Grateful, the tagline is Love All, All is One.</strong></p>
         <p><strong>I say new thought process but in reality the basis of the thought process is as old as time, love and care for Self and All Others!</strong></p>
