@@ -6,7 +6,7 @@ import os
 import logging
 from pathlib import Path
 from pydantic import BaseModel, Field, EmailStr
-from typing import List, Optional
+from typing import List
 import uuid
 from datetime import datetime
 import anyio
@@ -52,16 +52,16 @@ def _sanitize_text(text: str, limit: int = 5000) -> str:
     if not isinstance(text, str):
         return ""
     text = text.replace("\r", "").strip()
-    if len(text) &gt; limit:
+    if len(text) > limit:
         return text[:limit] + "... (truncated)"
     return text
 
 
-def _sendgrid_enabled() -&gt; bool:
+def _sendgrid_enabled() -> bool:
     return bool(os.environ.get('SENDGRID_API_KEY') and os.environ.get('CONTACT_TO'))
 
 
-def _send_email_sync(from_email: str, subject: str, content: str) -&gt; bool:
+def _send_email_sync(from_email: str, subject: str, content: str) -> bool:
     """Send email using SendGrid synchronously. Returns True if accepted by API."""
     from sendgrid import SendGridAPIClient  # lazy import
     from sendgrid.helpers.mail import Mail
@@ -109,8 +109,8 @@ async def contact_message(payload: ContactSubmissionCreate):
 
     # Compose content
     content = (
-        f"New contact form submission (Blessed &amp; Grateful)\n\n"
-        f"From: {name} &lt;{payload.email}&gt;\n"
+        f"New contact form submission (Blessed & Grateful)\n\n"
+        f"From: {name} <{payload.email}>\n"
         f"Subject: {subject}\n\n"
         f"Message:\n{message}\n\n"
         f"Submitted at: {datetime.utcnow().isoformat()}Z"

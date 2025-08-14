@@ -1,8 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/***** Global site styles *****/
+/* Global site styles for Blessed & Grateful */
 :root { --brand: #111; --accent: #e11d48; }
 
 .bg-grid {
@@ -10,17 +6,15 @@
   background-size: 24px 24px;
 }
 
-.hero-quote {
-  @apply text-2xl md:text-4xl font-semibold tracking-tight; 
-}
-
-.lead { @apply text-gray-600 text-lg md:text-xl; }
-.section-title { @apply text-2xl md:text-3xl font-semibold tracking-tight text-gray-900; }
-.card { @apply rounded-xl border border-gray-200 bg-white p-6 shadow-sm; }
-.btn { @apply inline-flex items-center justify-center rounded-lg bg-gray-900 text-white px-4 py-2 text-sm font-medium hover:bg-gray-800 transition; }
-.input { @apply w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900/20; }
-.textarea { @apply input min-h-[140px]; }
+.hero-quote { font-size: clamp(1.5rem, 2.5vw, 2.5rem); font-weight: 600; letter-spacing: -0.02em; }
+.lead { color: #4b5563; font-size: clamp(1rem, 1.6vw, 1.25rem); }
+.section-title { font-size: clamp(1.5rem, 2.3vw, 2rem); font-weight: 600; letter-spacing: -0.01em; color: #111827; }
+.card { border-radius: 0.75rem; border: 1px solid #e5e7eb; background: white; padding: 1.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.btn { display: inline-flex; align-items: center; justify-content: center; border-radius: 0.5rem; background: #111; color: white; padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 500; transition: background .15s ease; }
+.btn:hover { background: #000; }
+.input { width: 100%; border-radius: 0.5rem; border: 1px solid #d1d5db; padding: 0.5rem 0.75rem; outline: none; box-shadow: none; }
+.input:focus { box-shadow: 0 0 0 4px rgba(17,24,39,.1); border-color: #111; }
+.textarea { min-height: 140px; }
 
 .logo-wordmark { height: 40px; }
-
-.footer { @apply text-sm text-gray-500; }
+.footer { color: #6b7280; font-size: 0.875rem; }
