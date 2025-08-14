@@ -28,6 +28,9 @@ function Header() {
           <a href="#principles" className="hover:text-black">Principles</a>
           <a href="#journey" className="hover:text-black">Journey</a>
           <Link to="/archive" className="hover:text-black">Archive</Link>
+          <Link to="/archive" className="hover:text-black">Archive</Link>
+          <Link to="/podcast" className="hover:text-black">Podcast</Link>
+          <Link to="/talk" className="hover:text-black">Talk with Sarah</Link>
           <Link to="/dr-chen" className="hover:text-black">Meet Dr. Chen</Link>
           <Link to="/#contact" className="hover:text-black">Contact</Link>
         </nav>
