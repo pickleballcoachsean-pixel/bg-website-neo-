@@ -1,15 +1,1 @@
-https://customer-assets.emergentagent.com/job_neutral-wisdom/artifacts/0btockiy_og-default.jpg
-<!-- SVG used as OG image placeholder (served at .jpg path). 1200x630, dark gradient with centered white TM. -->
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b0b0c"/>
-      <stop offset="100%" stop-color="#151516"/>
-    </linearGradient>
-  </defs>
-  <rect width="1200" height="630" fill="url(#g)"/>
-  <g>
-    <rect x="200" y="170" width="800" height="290" rx="24" fill="rgba(255,255,255,0.04)"/>
-  </g>
-  <image href="https://customer-assets.emergentagent.com/job_835d6716-06f3-4ffd-8b0d-6accacc9f2fd/artifacts/4y59lo3j_2%20WHITE%20TM.jpeg" x="300" y="220" height="190" width="600" preserveAspectRatio="xMidYMid meet"/>
-</svg>
+PNG_DATA:https://customer-assets.emergentagent.com/job_neutral-wisdom/artifacts/0btockiy_og-default.jpg
